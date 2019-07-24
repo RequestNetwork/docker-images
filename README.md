@@ -14,4 +14,6 @@ docker build . -t request-ipfs
 ## Running the image
 
 To run the image, you can execute:
+```bash
 docker run -p 4001:4001 request-ipfs
+```
