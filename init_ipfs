@@ -1,0 +1,45 @@
+#!/bin/sh
+set -e
+set -x
+
+user=ipfs
+repo="$IPFS_PATH"
+
+if [ `id -u` -eq 0 ]; then
+  echo "Changing user to $user"
+  # ensure folder is writable
+  su-exec "$user" test -w "$repo" || chown -R -- "$user" "$repo"
+  # restart script with new privileges
+  exec su-exec "$user" "$0" "$@"
+fi
+
+# 2nd invocation with regular user
+ipfs version
+
+ipfs init
+
+# Clean up all bootstrap nodes
+# https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#private-networks
+echo "Removing all bootstrap nodes..."
+ipfs bootstrap rm --all
+
+ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001
+ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
+
+ipfs bootstrap add /dns4/ipfs-bootstrap.request.network/tcp/4001/ipfs/QmPBPgTDVjveRu6KjGVMYixkCSgGtVyV8aUe6wGQeLZFVd
+ipfs bootstrap add /dns4/ipfs-bootstrap-2.request.network/tcp/4001/ipfs/QmYdcSoVNU1axgSnkRAyHtwsKiSvFHXeVvRonGCAV9LVEj
+ipfs bootstrap add /dns4/ipfs-2.request.network/tcp/4001/ipfs/QmPBPgTDVjveRu6KjGVMYixkCSgGtVyV8aUe6wGQeLZFVd
+ipfs bootstrap add /dns4/ipfs.request.network/tcp/4001/ipfs/Qmb6a5DH45k8JwLdLVZUhRhv1rnANpsbXjtsH41esGhNCh
+
+# Always check for private network secrets
+[ -f $IPFS_PATH/swarm.key ] || {
+  echo "No swarm.key found, copying from mounted secret"
+  [ -f ./swarm.key ] || {
+    echo "No swarm.key found in ipfs config"
+    exit 1
+  }
+  cp -v ./swarm.key $IPFS_PATH/swarm.key
+  chmod 600 $IPFS_PATH/swarm.key
+}
+
+exec ipfs "$@"
