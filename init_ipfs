@@ -16,7 +16,11 @@ fi
 # 2nd invocation with regular user
 ipfs version
 
-ipfs init
+if [ -e "$repo/config" ]; then
+  echo "Found IPFS repo at $repo"
+else
+  ipfs init
+fi
 
 # Clean up all bootstrap nodes
 # https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#private-networks
