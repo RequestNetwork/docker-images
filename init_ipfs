@@ -22,6 +22,10 @@ else
   ipfs init
 fi
 
+if [ -e "$repo/api" ]; then
+  rm $repo/api
+fi
+
 # Clean up all bootstrap nodes
 # https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#private-networks
 echo "Removing all bootstrap nodes..."
@@ -30,20 +34,33 @@ ipfs bootstrap rm --all
 ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001
 ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
 
+ipfs config Routing.Type none
+
+ipfs config Discovery.MDNS.Enabled false --json
+
+ipfs config Swarm.DisableNatPortMap true --json
+ipfs config Swarm.DisableBandwidthMetrics true --json
+
+ipfs config Swarm.ConnMgr.LowWater 50 --json
+ipfs config Swarm.ConnMgr.HighWater 1000 --json
+
 ipfs bootstrap add /dns4/ipfs-bootstrap.request.network/tcp/4001/ipfs/QmaSrBXFBaupfeGMTuigswtKtsthbVaSonurjTV967Fdxx
 ipfs bootstrap add /dns4/ipfs-bootstrap-2.request.network/tcp/4001/ipfs/QmYdcSoVNU1axgSnkRAyHtwsKiSvFHXeVvRonGCAV9LVEj
 ipfs bootstrap add /dns4/ipfs-2.request.network/tcp/4001/ipfs/QmPBPgTDVjveRu6KjGVMYixkCSgGtVyV8aUe6wGQeLZFVd
 ipfs bootstrap add /dns4/ipfs-survival.request.network/tcp/4001/ipfs/Qmb6a5DH45k8JwLdLVZUhRhv1rnANpsbXjtsH41esGhNCh
 
 # Always check for private network secrets
-[ -f $IPFS_PATH/swarm.key ] || {
+[ -f $repo/swarm.key ] || {
   echo "No swarm.key found, copying from mounted secret"
   [ -f ./swarm.key ] || {
     echo "No swarm.key found in ipfs config"
     exit 1
   }
-  cp -v ./swarm.key $IPFS_PATH/swarm.key
-  chmod 600 $IPFS_PATH/swarm.key
+  cp -v ./swarm.key $repo/swarm.key
+  chmod 600 $repo/swarm.key
 }
+
+# Force private network connection or fail
+export LIBP2P_FORCE_PNET=1
 
 exec ipfs "$@"
