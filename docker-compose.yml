@@ -1,0 +1,20 @@
+version: "3.1"
+
+services:
+  request-node:
+    build: ./request-node/
+    environment:
+      LOG_LEVEL: DEBUG
+      IPFS_HOST: ipfs
+      IPFS_PORT: 5001
+      ETHEREUM_NETWORK_ID: 4
+      WEB3_PROVIDER_URL: https://rinkeby.infura.io/v3/<your API key>
+      MNEMONIC:
+      INITIALIZATION_STORAGE_FILE_PATH: index.json
+    depends_on:
+      - ipfs
+
+  ipfs:
+    build:
+      context: ./request-ipfs/
+      dockerfile: Dockerfile
