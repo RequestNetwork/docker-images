@@ -1,4 +1,4 @@
-FROM ipfs/go-ipfs:v0.4.22
+FROM ipfs/go-ipfs:v0.4.23
 WORKDIR '/data/ipfs-config'
 COPY . .
 
