@@ -51,6 +51,9 @@ ipfs config Swarm.DisableBandwidthMetrics true --json
 ipfs config Swarm.ConnMgr.LowWater 50 --json
 ipfs config Swarm.ConnMgr.HighWater 1000 --json
 
+# allow cors calls
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"*\"]"
+
 ipfs bootstrap add /dns4/ipfs-bootstrap.request.network/tcp/4001/ipfs/QmaSrBXFBaupfeGMTuigswtKtsthbVaSonurjTV967Fdxx
 ipfs bootstrap add /dns4/ipfs-bootstrap-2.request.network/tcp/4001/ipfs/QmYdcSoVNU1axgSnkRAyHtwsKiSvFHXeVvRonGCAV9LVEj
 ipfs bootstrap add /dns4/ipfs-2.request.network/tcp/4001/ipfs/QmPBPgTDVjveRu6KjGVMYixkCSgGtVyV8aUe6wGQeLZFVd
