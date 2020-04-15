@@ -41,6 +41,12 @@ else
   ipfs config Addresses.Announce --json "[\"/ip4/$EXTERNAL_IP/tcp/$SWARM_PORT\"]"
 fi
 
+if [ -z "${PRIVATE_KEY}" ] || [ -z "${PEER_ID}" ]; then
+  echo "No private key or peer id set"
+else
+  jq ".Identity = {\"PeerID\": \"$PEER_ID\", \"PrivKey\":\"$PRIVATE_KEY\" }" ../ipfs/config > ~/tmp.json && mv ~/tmp.json ../ipfs/config
+fi
+
 ipfs config Routing.Type none
 
 ipfs config Discovery.MDNS.Enabled false --json
