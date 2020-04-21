@@ -1,7 +1,7 @@
 # build image
 FROM node:10.15.3 AS build
 WORKDIR /node
-RUN npm install @requestnetwork/request-node@0.8.0
+RUN npm install @requestnetwork/request-node@0.9.0
 
 # final image
 FROM node:10.15.3-alpine
