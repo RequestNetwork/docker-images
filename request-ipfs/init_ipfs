@@ -34,6 +34,13 @@ ipfs bootstrap rm --all
 ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001
 ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
 
+# If an external ip is specified, we annouce it
+if [[ -z "${EXTERNAL_IP}" ]]; then
+  echo "No external ip"
+else
+  ipfs config Addresses.Announce --json "[\"/ip4/$EXTERNAL_IP/tcp/$SWARM_PORT\"]"
+fi
+
 if [ -z "${PRIVATE_KEY}" ] || [ -z "${PEER_ID}" ]; then
   echo "No private key or peer id set"
 else
