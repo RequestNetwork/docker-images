@@ -1,10 +1,10 @@
 # build image
-FROM node:10.15.3 AS build
+FROM node:lts-alpine AS build
 WORKDIR /node
 RUN npm install @requestnetwork/request-node@0.24.0
 
 # final image
-FROM node:10.15.3-alpine
+FROM node:lts-alpine
 COPY --from=build /node /node
 WORKDIR /node
 
