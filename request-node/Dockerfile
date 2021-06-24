@@ -1,7 +1,7 @@
 # build image
 FROM node:lts-alpine AS build
 WORKDIR /node
-RUN npm install @requestnetwork/request-node@0.24.0
+RUN npm install @requestnetwork/request-node@0.26.0
 
 # final image
 FROM node:lts-alpine
