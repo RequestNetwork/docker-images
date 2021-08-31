@@ -3,18 +3,54 @@ version: "3.1"
 services:
   request-node:
     build: ./request-node/
+    container_name: request-node
+    ports:
+      - 3200:3200
     environment:
-      LOG_LEVEL: DEBUG
+      LOG_LEVEL: INFO
       IPFS_HOST: ipfs
       IPFS_PORT: 5001
-      ETHEREUM_NETWORK_ID: 4
-      WEB3_PROVIDER_URL: https://rinkeby.infura.io/v3/<your API key>
-      MNEMONIC:
+      ETHEREUM_NETWORK_ID: 0
+      WEB3_PROVIDER_URL: http://ganache:8545
+      MNEMONIC: "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
       INITIALIZATION_STORAGE_FILE_PATH: index.json
+      PORT: 3200
+    # override the default command
+    # wait for request-contracts to terminate before starting the node
+    # Without this, the node crashes as it starts before contracts are deployed
+    command: sh -c "while ping -c1 request-contracts &>/dev/null; do echo \"wait for request-contracts\";sleep 1; done; echo \"Contracts ready\" && node /node/node_modules/@requestnetwork/request-node/dist/server.js"
     depends_on:
       - ipfs
+      - ganache
+      - request-contracts
 
   ipfs:
-    build:
-      context: ./request-ipfs/
-      dockerfile: Dockerfile
+    build: ./request-ipfs/
+    container_name: ipfs
+    ports:
+      - 5001:5001
+
+  ganache:
+    image: trufflesuite/ganache-cli
+    container_name: ganache
+    ports:
+      - 8545:8545
+    command:
+      - "-m"
+      - "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
+
+  request-contracts:
+    build: ./request-contracts
+    container_name: request-contracts
+    command: # wait for ganache to be started
+      - "./wait-for"
+      - "ganache:8545"
+      - "--"
+      - "./node_modules/.bin/hardhat"
+      - "deploy"
+      - "--network"
+      - "web3"
+    environment:
+      WEB3_URL: ganache
+    depends_on:
+      - ganache
