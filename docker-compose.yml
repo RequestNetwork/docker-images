@@ -42,15 +42,7 @@ services:
   request-contracts:
     build: ./request-contracts
     container_name: request-contracts
-    command: # wait for ganache to be started
-      - "./wait-for"
-      - "ganache:8545"
-      - "--"
-      - "./node_modules/.bin/hardhat"
-      - "deploy"
-      - "--network"
-      - "web3"
     environment:
-      WEB3_URL: ganache
+      WEB3_URL: http://ganache:8545
     depends_on:
       - ganache
