@@ -1,5 +1,5 @@
 const { task } = require("hardhat/config");
-// import the compile "deploy.ts"
+// import the compiled "deploy.ts"
 const deploy = require("./deploy").default;
 
 console.log("web3:" + process.env.WEB3_URL);
