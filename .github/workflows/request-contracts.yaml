@@ -7,7 +7,7 @@ on:
         required: true
 
 jobs:
-  push:
+  docker:
     runs-on: ubuntu-latest
     steps:
       - id: repo-sha
