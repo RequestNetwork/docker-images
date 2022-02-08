@@ -3,7 +3,6 @@ on:
     inputs:
       tag:
         description: Version (tag) of the ipfs/go-ipfs base Docker image to build from
-        default: latest
         required: true
 
 jobs:
