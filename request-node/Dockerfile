@@ -4,6 +4,7 @@ FROM node:lts-alpine AS base
 WORKDIR /node
 
 FROM base AS build
+ARG VERSION
 RUN npm install @requestnetwork/request-node@${VERSION}
 
 FROM base

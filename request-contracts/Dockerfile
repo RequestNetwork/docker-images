@@ -6,6 +6,7 @@ RUN apk add --no-cache git
 RUN apk add --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing dockerize
 
 FROM base AS build
+ARG TAG
 RUN yarn global add @vercel/ncc
 RUN git clone https://github.com/RequestNetwork/requestNetwork.git /app
 RUN git checkout ${TAG}
