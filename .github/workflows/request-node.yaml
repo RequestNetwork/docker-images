@@ -20,6 +20,6 @@ jobs:
       - uses: docker/build-push-action@v2
         with:
           push: true
-          context: request-node
+          context: ./request-node
           build-args: VERSION=${{ steps.npm-version.outputs.version }}
           tags: requestnetwork/request-node:${{ steps.npm-version.outputs.version }},requestnetwork/request-node:${{ github.event.inputs.version }}

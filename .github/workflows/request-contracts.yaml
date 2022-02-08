@@ -20,6 +20,6 @@ jobs:
       - uses: docker/build-push-action@v2
         with:
           push: true
-          context: request-contracts
+          context: ./request-contracts
           build-args: TAG=${{ steps.repo-sha.outputs.sha }}
           tags: requestnetwork/request-contracts:${{ steps.repo-sha.outputs.sha }},requestnetwork/request-contracts:latest

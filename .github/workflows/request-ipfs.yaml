@@ -17,6 +17,6 @@ jobs:
       - uses: docker/build-push-action@v2
         with:
           push: true
-          context: request-ipfs
+          context: ./request-ipfs
           build-args: IPFS_VERSION=${{ github.event.inputs.tag }}
           tags: requestnetwork/request-ipfs:${{ github.event.inputs.tag }},requestnetwork/request-ipfs:latest
