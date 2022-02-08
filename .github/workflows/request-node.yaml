@@ -21,5 +21,6 @@ jobs:
         with:
           push: true
           context: ./request-node
+          file: ./request-node/Dockerfile
           build-args: VERSION=${{ steps.npm-version.outputs.version }}
           tags: requestnetwork/request-node:${{ steps.npm-version.outputs.version }},requestnetwork/request-node:${{ github.event.inputs.version }}

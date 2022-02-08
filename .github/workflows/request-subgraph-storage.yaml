@@ -21,5 +21,6 @@ jobs:
         with:
           push: true
           context: ./request-subgraph-storage
+          file: ./request-subgraph-storage/Dockerfile
           build-args: TAG=${{ steps.repo-sha.outputs.sha }}
           tags: requestnetwork/request-subgraph-storage:${{ steps.repo-sha.outputs.sha }},requestnetwork/request-subgraph-storage:latest

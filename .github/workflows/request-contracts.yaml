@@ -21,5 +21,6 @@ jobs:
         with:
           push: true
           context: ./request-contracts
+          file: ./request-contracts/Dockerfile
           build-args: TAG=${{ steps.repo-sha.outputs.sha }}
           tags: requestnetwork/request-contracts:${{ steps.repo-sha.outputs.sha }},requestnetwork/request-contracts:latest
