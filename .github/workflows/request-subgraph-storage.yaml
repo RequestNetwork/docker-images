@@ -10,6 +10,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - id: repo-sha
         run: echo "::set-output name=sha::$(git ls-remote https://github.com/RequestNetwork/storage-subgraph.git ${{ github.event.inputs.branch }} | cut -f 1 | cut -b -7)"
       - uses: docker/setup-buildx-action@v1
@@ -20,7 +21,6 @@ jobs:
       - uses: docker/build-push-action@v2
         with:
           push: true
-          context: ./request-subgraph-storage
-          file: ./request-subgraph-storage/Dockerfile
+          context: request-subgraph-storage
           build-args: TAG=${{ steps.repo-sha.outputs.sha }}
           tags: requestnetwork/request-subgraph-storage:${{ steps.repo-sha.outputs.sha }},requestnetwork/request-subgraph-storage:latest
