@@ -1,3 +1,5 @@
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/requestnetwork/request-ipfs)
+
 # Request private IPFS swarm Docker image
 
 This repository contains the files necessary to create a docker image

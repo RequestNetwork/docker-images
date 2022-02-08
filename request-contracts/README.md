@@ -1,3 +1,5 @@
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/requestnetwork/request-contracts)
+
 # Request Contracts
 
 A Docker image to deploy Request Contracts to ganache. 

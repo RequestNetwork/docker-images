@@ -1,3 +1,5 @@
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/requestnetwork/request-subgraph-storage)
+
 # Request Subgraph: Storage
 
 A Docker image to deploy Request's storage subgraph to a TheGraph node. 

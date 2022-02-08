@@ -1,3 +1,5 @@
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/requestnetwork/request-node)
+
 # Request Node
 
 A Docker image to run a full [Request Node](https://github.com/RequestNetwork/requestNetwork/tree/master/packages/request-node). 
