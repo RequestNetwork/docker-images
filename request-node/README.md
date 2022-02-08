@@ -2,12 +2,24 @@
 
 # Request Node
 
-A Docker image to run a full [Request Node](https://github.com/RequestNetwork/requestNetwork/tree/master/packages/request-node). 
+A Docker image to run a full Request Node.
+Please refer to its [documentation](https://github.com/RequestNetwork/requestNetwork/tree/master/packages/request-node) for more details.
 
 ## Usage 
 
-For usage, see [docker-compose](../docker.compose.yml).
 This image is stored on [Docker Hub](https://hub.docker.com/r/requestnetwork/request-node).
+To run the Docker image, you can execute:
+```bash
+docker run -p 3000:3000 --env MNEMONIC=<your mnemonic> requestnetwork/request-node 
+```
+You may also want to set up the following environment variables:
+- `WEB3_PROVIDER_URL`
+- `IPFS_HOST`
+- `INITIALIZATION_STORAGE_FILE_PATH` 
+
+You can find a list of all available environment variables [here](https://github.com/RequestNetwork/requestNetwork/tree/master/packages/request-node#launch).
+
+For a complete example, see the [docker-compose.yml](../docker-compose.yml) file.
 
 ## Versions
 
