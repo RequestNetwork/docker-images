@@ -8,6 +8,8 @@ Please refer to its [documentation](https://github.com/RequestNetwork/requestNet
 ## Usage 
 
 This image is stored on [Docker Hub](https://hub.docker.com/r/requestnetwork/request-node).
+For a complete example, see the [docker-compose.yml](../docker-compose.yml) file.
+
 To run the Docker image, you can execute:
 ```bash
 docker run -p 3000:3000 --env MNEMONIC=<your mnemonic> requestnetwork/request-node 
@@ -19,12 +21,8 @@ You may also want to set up the following environment variables:
 
 You can find a list of all available environment variables [here](https://github.com/RequestNetwork/requestNetwork/tree/master/packages/request-node#launch).
 
-For a complete example, see the [docker-compose.yml](../docker-compose.yml) file.
-
 ## Versions
 
-The docker image tags represent the matching version of NPM's [@requestnetwork/request-node](https://www.npmjs.com/package/@requestnetwork/request-node) package.
-
-At the time of writing:
-- `latest` and `0.26.0` tags are equal ;
-- `next` and `0.26.1-next.1649` tags are equal.
+Image tags represent the matching version of NPM's [@requestnetwork/request-node](https://www.npmjs.com/package/@requestnetwork/request-node) package.
+- `latest` targets the latest released version of the package on NPM ;
+- `next` points to the latest development version of the NPM package:  `x.y.z-next.id`.
