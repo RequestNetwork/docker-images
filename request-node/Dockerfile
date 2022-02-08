@@ -1,14 +1,13 @@
-# build image
-FROM node:lts-alpine AS build
-WORKDIR /node
-RUN npm install @requestnetwork/request-node@0.26.0
+ARG VERSION=latest
 
-# final image
-FROM node:lts-alpine
+FROM node:lts-alpine AS base
+WORKDIR /node
+
+FROM base AS build
+RUN npm install @requestnetwork/request-node@${VERSION}
+
+FROM base
 COPY --from=build /node /node
-WORKDIR /node
-
 ENV PORT 3000
 EXPOSE 3000
-
 CMD ["node", "/node/node_modules/@requestnetwork/request-node/dist/server.js"]

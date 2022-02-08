@@ -1,32 +1,28 @@
-# build image
-FROM node:lts AS build
+ARG TAG=master
+
+FROM node:lts-alpine AS base
 WORKDIR /app
+RUN apk add --no-cache git
+RUN apk add --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing dockerize
 
-ARG TAG master
-
+FROM base AS build
 RUN yarn global add @vercel/ncc
-
 RUN git clone https://github.com/RequestNetwork/requestNetwork.git /app
-RUN git checkout $TAG
+RUN git checkout ${TAG}
 RUN yarn
 RUN yarn workspace @requestnetwork/types run build
 RUN yarn workspace @requestnetwork/currency run build
 WORKDIR /app/packages/smart-contracts
 RUN yarn build:sol
-COPY ./deploy.ts .
-RUN ncc build deploy.ts -o dist
+RUN ncc build scripts/5_deploy-all.ts -o dist
 
-# final image
-FROM node:lts-alpine
-WORKDIR /app
-
-RUN npm i hardhat @nomiclabs/hardhat-ethers ethers --production
-
+FROM base
 ENV WEB3_URL=http://ganache:8545
-
-COPY wait-for /app
+RUN npm install --production hardhat @nomiclabs/hardhat-ethers ethers
 COPY hardhat.config.js /app
 COPY --from=build /app/packages/smart-contracts/dist/index.js /app/deploy.js
 COPY --from=build /app/packages/smart-contracts/build /app/build
-
-CMD ["sh","-c", "./wait-for ${WEB3_URL//http:\\/\\//} -- npx hardhat deploy --network private"]
+CMD dockerize \
+    -wait "tcp://${WEB3_URL/http:\/\//}" \
+    -timeout 60s \
+    npx hardhat deploy --network private

@@ -1,0 +1,25 @@
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch of the RequestNetwork/requestNetwork repository to build against
+        default: master
+        required: true
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - id: repo-sha
+        run: echo "::set-output name=sha::$(git ls-remote https://github.com/RequestNetwork/requestNetwork.git ${{ github.event.inputs.branch }} | cut -f 1 | cut -b -7)"
+      - uses: docker/setup-buildx-action@v1
+      - uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: request-contracts
+          build-args: TAG=${{ steps.repo-sha.outputs.sha }}
+          tags: requestnetwork/request-contracts:${{ steps.repo-sha.outputs.sha }},requestnetwork/request-contracts:latest

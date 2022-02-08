@@ -5,7 +5,7 @@ services:
     build: ./request-node/
     container_name: request-node
     ports:
-      - 3200:3200
+      - "3200:3200"
     environment:
       LOG_LEVEL: INFO
       IPFS_HOST: ipfs
@@ -28,13 +28,13 @@ services:
     build: ./request-ipfs/
     container_name: ipfs
     ports:
-      - 5001:5001
+      - "5001:5001"
 
   ganache:
     image: trufflesuite/ganache-cli
     container_name: ganache
     ports:
-      - 8545:8545
+      - "8545:8545"
     command:
       - "-m"
       - "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
@@ -46,3 +46,45 @@ services:
       WEB3_URL: http://ganache:8545
     depends_on:
       - ganache
+
+  graph-node:
+    image: graphprotocol/graph-node:v0.25.0
+    container_name: graph-node
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8020:8020"
+      - "8030:8030"
+      - "8040:8040"
+    environment:
+      postgres_host: postgres
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: "ipfs:5001"
+      ethereum: "private:http://ganache:8545"
+      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: 1
+    depends_on:
+      - postgres
+      - ipfs
+      - ganache
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
+
+  request-subgraph-storage:
+    build: ./request-subgraph-storage/
+    container_name: request-subgraph-storage
+    environment:
+      WEB3_URL: http://ganache:8545
+      GRAPH_NODE_URL: http://graph-node:8020
+      IPFS_URL: http://ipfs:5001
+    depends_on:
+      - graph-node
