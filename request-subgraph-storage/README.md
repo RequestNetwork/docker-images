@@ -11,21 +11,4 @@ For a complete example, see the [docker-compose.yml](../docker-compose.yml) file
 
 ## Versions
 
-The docker image tags represent the matching git commit on the [Request Storage Subgraph](https://github.com/RequestNetwork/storage-subgraph) repository.
-
-
-## Contributing
-
-There should be a new image pushed every time there is a change in Request's storage subgraph.
-
-```bash
-# the commit SHA from storage-subgraph repo
-SHA=6a3b315
-docker build \
-    --build-arg TAG=$SHA \
-    -t requestnetwork/request-subgraph-storage:$SHA
-    -t requestnetwork/request-subgraph-storage:latest .
-
-docker push requestnetwork/request-subgraph-storage:$SHA
-docker push requestnetwork/request-subgraph-storage:latest
-```
+Image tags represent the matching Git commit on the [Request Storage Subgraph](https://github.com/RequestNetwork/storage-subgraph) repository.
