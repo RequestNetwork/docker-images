@@ -1,3 +1,5 @@
+name: request-node
+
 on:
   workflow_dispatch:
     inputs:

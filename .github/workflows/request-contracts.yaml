@@ -1,3 +1,5 @@
+name: request-contracts
+
 on:
   workflow_dispatch:
     inputs:

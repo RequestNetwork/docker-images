@@ -1,3 +1,5 @@
+name: request-subgraph-storage
+
 on:
   workflow_dispatch:
     inputs:
