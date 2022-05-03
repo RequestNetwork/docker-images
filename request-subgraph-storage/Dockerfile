@@ -1,6 +1,7 @@
-ARG TAG=main
+ARG NODE_VERSION=16.14.0-alpine3.14
+ARG STORAGE_SUBGRAPH_TAG=main
 
-FROM node:lts-alpine AS base
+FROM node:${NODE_VERSION} AS base
 WORKDIR /app
 RUN apk add --no-cache git
 RUN apk add --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing dockerize
@@ -8,7 +9,7 @@ RUN apk add --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing doc
 FROM base AS build
 ARG TAG
 RUN git clone https://github.com/RequestNetwork/storage-subgraph.git /app
-RUN git checkout ${TAG}
+RUN git checkout ${STORAGE_SUBGRAPH_TAG}
 RUN yarn
 RUN yarn codegen ./subgraph-private.yaml
 

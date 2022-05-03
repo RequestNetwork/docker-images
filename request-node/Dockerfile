@@ -1,11 +1,12 @@
-ARG VERSION=latest
+ARG NODE_VERSION=16.14.0-alpine3.14
+ARG REQUEST_NODE_VERSION=latest
 
-FROM node:lts-alpine AS base
+FROM node:${NODE_VERSION} AS base
 WORKDIR /node
 
 FROM base AS build
 ARG VERSION
-RUN npm install @requestnetwork/request-node@${VERSION}
+RUN npm install @requestnetwork/request-node@${REQUEST_NODE_VERSION}
 
 FROM base
 COPY --from=build /node /node
