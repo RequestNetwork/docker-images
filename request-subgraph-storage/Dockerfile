@@ -7,7 +7,7 @@ RUN apk add --no-cache git
 RUN apk add --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing dockerize
 
 FROM base AS build
-ARG TAG
+ARG STORAGE_SUBGRAPH_TAG
 RUN git clone https://github.com/RequestNetwork/storage-subgraph.git /app
 RUN git checkout ${STORAGE_SUBGRAPH_TAG}
 RUN yarn
