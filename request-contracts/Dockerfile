@@ -16,7 +16,7 @@ RUN yarn workspace @requestnetwork/types run build
 RUN yarn workspace @requestnetwork/currency run build
 WORKDIR /app/packages/smart-contracts
 RUN yarn build:sol
-RUN ncc build scripts/5_deploy-all.ts -o dist
+RUN ncc build scripts/test-deploy-all.ts -o dist
 
 FROM base
 ENV WEB3_URL=http://ganache:8545
