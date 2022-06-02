@@ -1,3 +1,5 @@
+require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-web3");
 const { task } = require("hardhat/config");
 // import the compiled "deploy.ts"
 const deploy = require("./deploy").default;
