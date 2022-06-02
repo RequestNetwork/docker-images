@@ -2,9 +2,9 @@
 
 # Request Subgraph: Storage
 
-A Docker image to deploy Request's storage subgraph to a TheGraph node. 
+A Docker image to deploy Request's storage subgraph to a TheGraph node.
 
-## Usage 
+## Usage
 
 The image is stored on [Docker Hub](https://hub.docker.com/r/requestnetwork/request-subgraph-storage).
 For a complete example, see the [docker-compose.yml](../docker-compose.yml) file.
