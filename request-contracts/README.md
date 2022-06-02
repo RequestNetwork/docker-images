@@ -4,7 +4,7 @@
 
 A Docker image to deploy Request Contracts to ganache.
 
-## Usage 
+## Usage
 
 This image is stored on [Docker Hub](https://hub.docker.com/r/requestnetwork/request-contracts).
 For a complete example, see the [docker-compose.yml](../docker-compose.yml) file.
