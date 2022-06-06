@@ -3,7 +3,7 @@ ARG TAG=master
 
 FROM node:${NODE_VERSION} AS base
 WORKDIR /app
-RUN apk add --no-cache git
+RUN apk add --no-cache git python3 make build-base
 RUN apk add --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing dockerize
 
 FROM base AS build
