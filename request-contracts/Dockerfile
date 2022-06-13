@@ -3,15 +3,15 @@ ARG TAG=master
 
 FROM node:${NODE_VERSION} AS base
 WORKDIR /app
+RUN apk add --no-cache git python3 build-base
 RUN apk add --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing dockerize
 
 FROM base AS build
 ARG TAG
-RUN apk add --no-cache git python3 build-base
 RUN yarn global add @vercel/ncc
 RUN git clone https://github.com/RequestNetwork/requestNetwork.git /app
 RUN git checkout ${TAG}
-RUN yarn
+RUN yarn --network-timeout 600000
 RUN yarn workspace @requestnetwork/types run build
 RUN yarn workspace @requestnetwork/currency run build
 WORKDIR /app/packages/smart-contracts
