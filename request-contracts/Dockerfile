@@ -13,6 +13,7 @@ ARG TAG
 RUN yarn global add @vercel/ncc
 RUN git clone https://github.com/RequestNetwork/requestNetwork.git /app
 RUN git checkout ${TAG}
+RUN yarn --network-timeout 600000 install
 RUN yarn workspace @requestnetwork/types run build
 RUN yarn workspace @requestnetwork/currency run build
 WORKDIR /app/packages/smart-contracts
