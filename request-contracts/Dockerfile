@@ -3,15 +3,16 @@ ARG TAG=master
 
 FROM node:${NODE_VERSION} AS base
 WORKDIR /app
-RUN apk add --no-cache git python3 build-base
 RUN apk add --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing dockerize
 
-FROM base AS build
+FROM base AS build-base
+RUN apk add --no-cache git python3 build-base
+
+FROM build-base AS build
 ARG TAG
 RUN yarn global add @vercel/ncc
 RUN git clone https://github.com/RequestNetwork/requestNetwork.git /app
 RUN git checkout ${TAG}
-RUN yarn --network-timeout 600000
 RUN yarn workspace @requestnetwork/types run build
 RUN yarn workspace @requestnetwork/currency run build
 WORKDIR /app/packages/smart-contracts
@@ -34,15 +35,18 @@ RUN cp -a /app/node_modules/@superfluid-finance/ethereum-contracts/scripts/libs 
 RUN sed -i 's/truffleDetected: detectTruffle()/truffleDetected: false/' dist/libs/common.js
 RUN sed -i 's/detectTruffle,/detectTruffle: () => false,/' dist/libs/common.js
 
-FROM base
-ENV WEB3_URL=http://ganache:8545
-RUN npm install --production \
+FROM build-base as node-modules
+RUN yarn add \
     hardhat@2.4.1 \
     ethers@5.5.1 \
     @nomiclabs/hardhat-ethers@2.0.2 \
     # web3 is needed to deploy the superfluid protocol
     web3@1.7.3 \
     @nomiclabs/hardhat-web3@2.0.0
+
+FROM base
+ENV WEB3_URL=http://ganache:8545
+COPY --from=node-modules /app/node_modules/ /app/node_modules/
 COPY hardhat.config.js /app
 COPY --from=build /app/packages/smart-contracts/dist/index.js /app/deploy.js
 COPY --from=build /app/packages/smart-contracts/dist/libs/ /app/libs/
