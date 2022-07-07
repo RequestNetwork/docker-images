@@ -1,4 +1,4 @@
-ARG NODE_VERSION=16.14.0-alpine3.14
+ARG NODE_VERSION=16.15.0-alpine3.15
 ARG TAG=master
 
 FROM node:${NODE_VERSION} AS base
