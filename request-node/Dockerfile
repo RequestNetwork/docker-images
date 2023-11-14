@@ -7,7 +7,7 @@ WORKDIR /node
 FROM base AS build
 ARG REQUEST_NODE_VERSION
 RUN apk add --no-cache git python3 build-base
-RUN npm install @requestnetwork/request-node@${REQUEST_NODE_VERSION}
+RUN npm install @requestnetwork/request-node@0.29.0${REQUEST_NODE_VERSION}
 
 FROM base
 COPY --from=build /node /node
