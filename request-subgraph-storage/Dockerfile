@@ -17,7 +17,7 @@ FROM base
 ENV WEB3_URL=http://ganache:8545
 ENV GRAPH_NODE_URL=http://graph-node:8020
 ENV IPFS_URL=http://ipfs:5001
-RUN npm install --production @graphprotocol/graph-cli@0.25.1 @graphprotocol/graph-ts@0.24.1
+RUN npm install --production @graphprotocol/graph-cli@0.54.0 @graphprotocol/graph-ts@0.31.0
 COPY --from=build /app/abis/ /app/abis/
 COPY --from=build /app/generated/ /app/generated/
 COPY --from=build /app/src/ /app/src/
@@ -29,5 +29,5 @@ CMD dockerize \
     -wait "${IPFS_URL}/api/v0/version" \
     -timeout 60s \
     echo "web3 up" \
-    && npx graph create --node ${GRAPH_NODE_URL} RequestNetwork/request-storage --access-token '' ./subgraph-private.yaml \
+    && npx graph create --node ${GRAPH_NODE_URL} RequestNetwork/request-storage --access-token '' \
     && npx graph deploy --node ${GRAPH_NODE_URL} --ipfs ${IPFS_URL} RequestNetwork/request-storage --access-token '' --version-label v0.0.1 ./subgraph-private.yaml
