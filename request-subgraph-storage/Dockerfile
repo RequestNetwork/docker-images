@@ -1,7 +1,7 @@
 FROM debian:12-slim
 
 # runtime-env
-ENV SUBGRAPH_BRANCH_REPO=https://github.com/RequestNetwork/storage-subgraph.git
+ENV SUBGRAPH_REPO=https://github.com/RequestNetwork/storage-subgraph.git
 ENV SUBGRAPH_BRANCH=main
 ENV SUBGRAPH_FILE=
 ENV SUBGRAPH_NAMESPACE=request-network/request-storage
