@@ -1,69 +1,32 @@
 #!/bin/bash
 
-export NODE_ENV="production"
-
-error() {
-    echo "$@"
-    exit 1
-}
-
-version() {
-    local hash=
-    local subgraph=
-    hash=$(git rev-parse --short "$SUBGRAPH_BRANCH")
-    subgraph=$(echo "$SUBGRAPH_FILE" | tr -d './' | awk -F '.' '{print $(NF-1)}')
-    echo "$subgraph-$hash"
-}
-
-repo() {
-    local repo=$SUBGRAPH_REPO
-    local branch=$SUBGRAPH_BRANCH
-    echo "Github, repo: $repo, branch: $branch"
-    local dir=
-    dir=$(echo "$repo" | awk -F '/' '{PRINT $NF}')
-    git clone "$repo" \
-        && cd "$dir" \
-        && git checkout "$branch" \
-        && yarn
-}
+export PATH=$PATH:/usr/local/lib/node_modules
+export NODE_ENV=production
 
 create() {
-    local graph_node=$GRAPH_NODE_URL
-    local namespace=$SUBGRAPH_NAMESPACE
     echo "Creating subgraph..."
-    echo -e "\tgraph-node: $graph_node"
-    echo -e "\tnamespace: $namespace"
+    echo -e "\tgraph-node: $GRAPH_NODE"
+    echo -e "\tnamespace: $SUBGRAPH_NAMESPACE"
     npx graph create \
-        --node "$graph_node" \
-        "$namespace" \
+        --node "$GRAPH_NODE" \
+        "$SUBGRAPH_NAMESPACE" \
         --access-token ''
 }
 
 deploy() {
-    local graph_node=$GRAPH_NODE_URL
-    local ipfs=$IPFS_URL
-    local namespace=$SUBGRAPH_NAMESPACE
-    local v=
-    v=$(version)
+    local ver=
+    ver=$(version)
     echo "Deploying subgraph..."
-    echo -e "\tgraph-node: $graph_node"
-    echo -e "\tipfs: $ipfs"
-    echo -e "\tnamespace: $namespace"
-    echo -e "\tversion: $v"
+    echo -e "\tgraph-node: $GRAPH_NODE"
+    echo -e "\tipfs: $IPFS_HOST"
+    echo -e "\tnamespace: $SUBGRAPH_NAMESPACE"
+    echo -e "\tversion: $ver"
     npx graph deploy \
-        --node "$graph_node" \
-        --ipfs "$ipfs" \
-        "$namespace" \
+        --node "$GRAPH_NODE" \
+        --ipfs "$IPFS_HOST" \
+        "$SUBGRAPH_NAMESPACE" \
         --access-token '' \
-        --version-label "$v"
-}
-
-complete() {
-    [[ -n $KEEP_ALIVE ]] || exit 0
-    echo "Keep alive active!"
-    while :; do
-        sleep 1
-    done
+        --version-label "$ver"
 }
 
 check() {
@@ -72,19 +35,56 @@ check() {
         SUBGRAPH_BRANCH
         SUBGRAPH_FILE
         SUBGRAPH_NAMESPACE
-        GRAPH_NODE_URL
-        IPFS_URL
+        GRAPH_NODE
+        IPFS_HOST
     )
     for env in "${envs[@]}"; do
-        echo "$env"
         [[ -n ${!env} ]] || error "Empty $env ENV!"
     done
 }
 
-# start
+codegen() {
+    yarn codegen "$SUBGRAPH_FILE"
+}
 
-check \
-    && repo \
+complete() {
+    echo "done"
+    [[ -n $KEEP_ALIVE ]] || exit 0
+    echo "Keep alive active!"
+    while :; do
+        sleep 1
+    done
+}
+
+error() {
+    echo "$@"
+    exit 1
+}
+
+repo() {
+    echo "Cloning $SUBGRAPH_REPO:$SUBGRAPH_BRANCH..."
+    mkdir repo \
+        && git clone \
+            --branch "$SUBGRAPH_BRANCH" \
+            "$SUBGRAPH_REPO" \
+            repo \
+        && cd repo \
+        && yarn --no-lockfile
+}
+
+version() {
+    local hash=
+    local subgraph=
+    hash=$(git rev-parse --short "$SUBGRAPH_BRANCH")
+    subgraph=$(echo "$SUBGRAPH_REPO" | awk -F '/' '{print $(NF-1),$(NF)}' | tr ' ' '_' | awk -F '.' '{print $1}')
+    echo "$subgraph-$hash"
+}
+
+# start
+check
+
+repo \
+    && codegen \
     && create \
     && deploy \
     && complete
