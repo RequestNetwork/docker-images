@@ -17,6 +17,7 @@ deploy() {
     local ver=
     ver=$(version)
     echo "Deploying subgraph..."
+    echo -e "\tfile: $SUBGRAPH_FILE"
     echo -e "\tgraph-node: $GRAPH_NODE"
     echo -e "\tipfs: $IPFS_HOST"
     echo -e "\tnamespace: $SUBGRAPH_NAMESPACE"
@@ -26,7 +27,8 @@ deploy() {
         --ipfs "$IPFS_HOST" \
         "$SUBGRAPH_NAMESPACE" \
         --access-token '' \
-        --version-label "$ver"
+        --version-label "$ver" \
+        "$SUBGRAPH_FILE"
 }
 
 check() {
