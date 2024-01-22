@@ -86,7 +86,7 @@ sql_user() {
     local pass=$2
     local role=$3
     [[ $(sql_exists pg_roles rolname "$user") -eq 1 ]] \
-        || sql_query "CREATE USER ${user} ${role} WITH ENCRYPTED PASSWORD '${pass}'"
+        || sql_query "CREATE USER ${user} WITH ${role} ENCRYPTED PASSWORD '${pass}'"
 }
 
 # main
