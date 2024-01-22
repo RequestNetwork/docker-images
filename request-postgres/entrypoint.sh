@@ -23,8 +23,6 @@ env_check() {
         DB_PASS
         DB_NAME
         DB_ROLE
-        DB_LOCALE
-        DB_ENCODING
     )
     for env in "${envs[@]}"; do
         [[ -n ${!env} ]] || error "Empty $env ENV!"
@@ -44,10 +42,8 @@ sql_db_exists() {
 sql_database() {
     local db=$1
     local user=$2
-    local locale=$3
-    local encoding=$4
     [[ $(sql_db_exists "$db") -eq 1 ]] || {
-        sql_query "CREATE DATABASE ${db} LOCALE ${locale} ENCODING ${encoding}"
+        sql_query "CREATE DATABASE ${db}"
         sql_query "GRANT ALL PRIVILEGES ON DATABASE ${db} TO ${user}"
     }
 }
@@ -103,7 +99,7 @@ if [[ $PG_DROP -eq 1 ]]; then
     sql_drop "$DB_NAME"
 else
     sql_user "$DB_USER" "$DB_PASS" "$DB_ROLE" \
-        && sql_database "$DB_NAME" "$DB_USER" "$DB_LOCALE" "$DB_ENCODING"
+        && sql_database "$DB_NAME" "$DB_USER"
 fi
 
 # done
