@@ -84,7 +84,8 @@ sql_query() {
 
 sql_user() {
     local user=$1
-    [[ $(sql_exists pg_roles rolname "$user") -eq 1 ]] || sql_query "CREATE USER $user"
+    local pass=$2
+    [[ $(sql_exists pg_roles rolname "$user") -eq 1 ]] || sql_query "CREATE USER ${user} PASSWORD ${pass}"
 }
 
 # main
@@ -96,7 +97,7 @@ export PGPASSWORD=$PG_PASS
 if [[ $PG_DROP -eq 1 ]]; then
     sql_drop "$DOCKER_DB"
 else
-    sql_user "$DOCKER_USER" \
+    sql_user "$DOCKER_USER" "$DOCKER_PASS" \
         && sql_database "$DOCKER_DB" "$DOCKER_USER"
 fi
 
