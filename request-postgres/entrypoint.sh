@@ -6,11 +6,15 @@ italic() {
 
 sql() {
     local query=$1
+    local db="postgres"
     echo -n "Running SQL: "
     italic "$query"
     psql \
         -q \
-        -U "$POSTGRES_USER" \
+        -U "$PG_USER" \
+        -h "$PG_HOST" \
+        -p "$PG_PORT" \
+        -d $db \
         -c "$query"
 }
 
@@ -40,5 +44,10 @@ database() {
 }
 
 # main
+echo "psql: $(psql --version)"
+echo "connection: postgres://${PG_USER}:<PG_PASS>@${PG_HOST}:${PG_PORT}/postgres"
+
+export PGPASSWORD=$PG_PASS
+
 user "$DOCKER_USER" \
     && database "$DOCKER_DB" "$DOCKER_USER"
