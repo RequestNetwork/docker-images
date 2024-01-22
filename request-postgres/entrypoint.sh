@@ -85,7 +85,8 @@ sql_query() {
 sql_user() {
     local user=$1
     local pass=$2
-    [[ $(sql_exists pg_roles rolname "$user") -eq 1 ]] || sql_query "CREATE USER ${user} WITH PASSWORD ${pass}"
+    [[ $(sql_exists pg_roles rolname "$user") -eq 1 ]] \
+        || sql_query "CREATE USER ${user} WITH PASSWORD '${pass}'"
 }
 
 # main
