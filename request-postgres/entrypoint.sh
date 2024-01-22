@@ -1,5 +1,14 @@
 #!/bin/bash
 
+complete() {
+    echo "done"
+    [[ $KEEP_ALIVE -eq 1 ]] || exit 0
+    echo "Keep alive active!"
+    while :; do
+        sleep 1
+    done
+}
+
 echo_italic() {
     echo -e "\e[3m${1}\e[0m"
 }
@@ -78,10 +87,6 @@ sql_user() {
     [[ $(sql_exists pg_roles rolname "$user") -eq 1 ]] || sql_query "CREATE USER $user"
 }
 
-complete() {
-    
-}
-
 # main
 echo "psql: $(psql --version)"
 echo "connection: postgres://${PG_USER}:<PG_PASS>@${PG_HOST}:${PG_PORT}/postgres"
@@ -90,8 +95,10 @@ export PGPASSWORD=$PG_PASS
 
 if [[ $PG_DROP -eq 1 ]]; then
     sql_drop "$DOCKER_DB"
-    exit
 else
     sql_user "$DOCKER_USER" \
         && sql_database "$DOCKER_DB" "$DOCKER_USER"
 fi
+
+# done
+complete
