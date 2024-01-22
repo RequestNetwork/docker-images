@@ -21,6 +21,10 @@ ENV PG_PASS=1234
 ENV PG_HOST=172.17.0.2
 ENV PG_PORT=5432
 
+ENV PG_DROP=
+
+ENV KEEP_ALIVE=
+
 # install runtime script
 WORKDIR /opt/app
 
