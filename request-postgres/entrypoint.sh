@@ -19,15 +19,15 @@ env_check() {
         PG_PASS
         PG_HOST
         PG_PORT
-        DOCKER_USER
-        DOCKER_PASS
-        DOCKER_DB
+        DB_USER
+        DB_PASS
+        DB_NAME
+        DB_ROLE
     )
     for env in "${envs[@]}"; do
         [[ -n ${!env} ]] || error "Empty $env ENV!"
     done
 }
-
 
 error() {
     echo "$1"
@@ -57,7 +57,6 @@ sql_drop() {
             -h "$PG_HOST" \
             -p "$PG_PORT" \
             "$db"
-
         }
 }
 
@@ -85,8 +84,9 @@ sql_query() {
 sql_user() {
     local user=$1
     local pass=$2
+    local role=$3
     [[ $(sql_exists pg_roles rolname "$user") -eq 1 ]] \
-        || sql_query "CREATE USER ${user} SUPERUSER WITH PASSWORD '${pass}'"
+        || sql_query "CREATE USER ${user} ${role} WITH PASSWORD '${pass}'"
 }
 
 # main
@@ -96,10 +96,10 @@ echo "connection: postgres://${PG_USER}:<PG_PASS>@${PG_HOST}:${PG_PORT}/postgres
 export PGPASSWORD=$PG_PASS
 
 if [[ $PG_DROP -eq 1 ]]; then
-    sql_drop "$DOCKER_DB"
+    sql_drop "$DB_NAME"
 else
-    sql_user "$DOCKER_USER" "$DOCKER_PASS" \
-        && sql_database "$DOCKER_DB" "$DOCKER_USER"
+    sql_user "$DB_USER" "$DB_PASS" "$DB_ROLE" \
+        && sql_database "$DB_NAME" "$DB_USER"
 fi
 
 # done

@@ -11,19 +11,18 @@ RUN apt-get update >/dev/null \
     && apt-get clean
 
 # runtime envs
-ENV DOCKER_USER=docker
-ENV DOCKER_PASS=let-me-in
-ENV DOCKER_DB=sepolia
+ENV DB_USER=
+ENV DB_PASS=
+ENV DB_ROLE=
+ENV DB_NAME=
 
 ENV PG_USER=postgres
-ENV PG_PASS=1234
-
-ENV PG_HOST=172.17.0.2
+ENV PG_PASS=
+ENV PG_HOST=
 ENV PG_PORT=5432
+ENV PG_DROP=
 
-ENV PG_DROP=1
-
-ENV KEEP_ALIVE=0
+ENV KEEP_ALIVE=
 
 # install runtime script
 WORKDIR /opt/app
