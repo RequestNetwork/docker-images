@@ -15,14 +15,13 @@ echo_italic() {
 
 env_check() {
     local envs=(
+        DB_USER
+        DB_PASS
+        DB_NAME
         PG_USER
         PG_PASS
         PG_HOST
         PG_PORT
-        DB_USER
-        DB_PASS
-        DB_NAME
-        DB_ROLE
     )
     for env in "${envs[@]}"; do
         [[ -n ${!env} ]] || error "Empty $env ENV!"
@@ -95,10 +94,10 @@ echo "connection: postgres://${PG_USER}:<PG_PASS>@${PG_HOST}:${PG_PORT}/postgres
 
 export PGPASSWORD=$PG_PASS
 
-if [[ $PG_DROP -eq 1 ]]; then
+if [[ $DB_DROP -eq 1 ]]; then
     sql_drop "$DB_NAME"
 else
-    sql_user "$DB_USER" "$DB_PASS" "$DB_ROLE" \
+    sql_user "$DB_USER" "$DB_PASS" \
         && sql_database "$DB_NAME" "$DB_USER"
 fi
 

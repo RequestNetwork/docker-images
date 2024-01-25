@@ -7,20 +7,20 @@ COPY .resources/apt.txt .
 
 RUN apt-get update >/dev/null \
     && apt-get install -y --no-install-recommends `cat apt.txt | tr "\n" " "` \
-    #&>/dev/null && \
     && apt-get clean
 
 # runtime envs
 ENV DB_USER=
 ENV DB_PASS=
-ENV DB_ROLE=
 ENV DB_NAME=
 
 ENV PG_USER=postgres
 ENV PG_PASS=
 ENV PG_HOST=
 ENV PG_PORT=5432
-ENV PG_DROP=
+
+# optional
+ENV DB_DROP=
 
 ENV KEEP_ALIVE=
 
