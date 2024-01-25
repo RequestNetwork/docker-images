@@ -51,7 +51,7 @@ codegen() {
 
 complete() {
     echo "done"
-    [[ -n $KEEP_ALIVE ]] || exit 0
+    [[ $KEEP_ALIVE -eq 0 ]] || exit 0
     echo "Keep alive active!"
     while :; do
         sleep 1
