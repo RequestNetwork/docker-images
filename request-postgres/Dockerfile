@@ -12,6 +12,7 @@ RUN apt-get update >/dev/null \
 # runtime envs
 ENV DB_USER=
 ENV DB_PASS=
+ENV DB_ROLE=
 ENV DB_NAME=
 
 ENV PG_USER=postgres

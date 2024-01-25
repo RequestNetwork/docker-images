@@ -17,6 +17,7 @@ env_check() {
     local envs=(
         DB_USER
         DB_PASS
+        DB_ROLE
         DB_NAME
         PG_USER
         PG_PASS
@@ -97,7 +98,7 @@ export PGPASSWORD=$PG_PASS
 if [[ $DB_DROP -eq 1 ]]; then
     sql_drop "$DB_NAME"
 else
-    sql_user "$DB_USER" "$DB_PASS" \
+    sql_user "$DB_USER" "$DB_PASS" "$DB_ROLE" \
         && sql_database "$DB_NAME" "$DB_USER"
 fi
 
