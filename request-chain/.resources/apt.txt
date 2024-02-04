@@ -1,0 +1,9 @@
+wget
+ca-certificates
+net-tools
+netcat-traditional
+unzip
+libjemalloc-dev
+librocksdb-dev
+procps
+htop
