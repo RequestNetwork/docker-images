@@ -108,14 +108,6 @@ export async function createRequest(
 ) {
     let signatureProvider = requestSignatureProvider(web3Provider, privateKey)
     let c = requestClient(requestNode, { signatureProvider })
-    let o = {
-        requestInfo: requestInfo(request, token),
-        paymentNetwork: requestPaymentNetwork(token, request.payee),
-        contentData: requestContentData(request.ref),
-        signer: requestSigner(request.payee),
-    }
-    console.log(o)
-    console.log(requestNode)
     let r =  await c.createRequest({
         requestInfo: requestInfo(request, token),
         paymentNetwork: requestPaymentNetwork(token, request.payee),
