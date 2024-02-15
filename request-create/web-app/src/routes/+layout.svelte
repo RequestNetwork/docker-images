@@ -13,6 +13,12 @@
         cursor: not-allowed;
         pointer-events: all !important;
     }
+    :global(select) {
+        cursor: pointer;
+    }
+    :global(hr) {
+        opacity: 0.1;
+    }
 </style>
 
 <slot/>

@@ -1,0 +1,7 @@
+.svelte-kit/
+build/
+node_modules/
+.gitignore
+.npmrc
+package-lock.json
+Dockerfile
