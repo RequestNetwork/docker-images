@@ -1,4 +1,4 @@
-# Request Postgres
+# Request Postgres Client
 
 ## Description
 This image provides a means to provision (or remove) a database in a postgres instance via a container job
