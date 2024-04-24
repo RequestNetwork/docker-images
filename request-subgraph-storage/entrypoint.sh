@@ -6,10 +6,10 @@ export NODE_ENV=production
 create() {
     echo "Creating subgraph..."
     echo -e "\tgraph-node: $GRAPH_NODE"
-    echo -e "\tnamespace: $SUBGRAPH_NAMESPACE"
+    echo -e "\tname: $SUBGRAPH_NAME"
     npx graph create \
         --node "$GRAPH_NODE" \
-        "$SUBGRAPH_NAMESPACE" \
+        "$SUBGRAPH_NAME" \
         --access-token ''
 }
 
@@ -20,12 +20,12 @@ deploy() {
     echo -e "\tfile: $SUBGRAPH_FILE"
     echo -e "\tgraph-node: $GRAPH_NODE"
     echo -e "\tipfs: $IPFS_HOST"
-    echo -e "\tnamespace: $SUBGRAPH_NAMESPACE"
+    echo -e "\tname: $SUBGRAPH_NAME"
     echo -e "\tversion: $ver"
     npx graph deploy \
         --node "$GRAPH_NODE" \
         --ipfs "$IPFS_HOST" \
-        "$SUBGRAPH_NAMESPACE" \
+        "$SUBGRAPH_NAME" \
         --access-token '' \
         --version-label "$ver" \
         "$SUBGRAPH_FILE"
@@ -36,7 +36,7 @@ check() {
         SUBGRAPH_REPO
         SUBGRAPH_BRANCH
         SUBGRAPH_FILE
-        SUBGRAPH_NAMESPACE
+        SUBGRAPH_NAME
         GRAPH_NODE
         IPFS_HOST
     )
