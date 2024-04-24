@@ -1,14 +1,23 @@
-[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/requestnetwork/request-subgraph-storage)
+# Request Subgraph Storage
 
-# Request Subgraph: Storage
+## Description
+This image provides the means to create & deploy a subgraph to a graph node via a container job.
 
-A Docker image to deploy Request's storage subgraph to a TheGraph node.
+## Configuration
+subgraph data
+```bash
+ENV SUBGRAPH_REPO=      # defaults to https://github.com/RequestNetwork/storage-subgraph.git
+ENV SUBGRAPH_BRANCH=    # defaults to main
+ENV SUBGRAPH_FILE=      # no default, typically subgraph-<chain>.yaml for above repo
+ENV SUBGRAPH_NAME=      # defaults to request-network/request-storage
+```
 
-## Usage
+graph-node / ipfs
+```bash
+ENV GRAPH_NODE=         # no default, typically http://<graph-node-host>:8020
+ENV IPFS_HOST=          # no default, typically http://<ipfs-host>:5001
+```
 
-The image is stored on [Docker Hub](https://hub.docker.com/r/requestnetwork/request-subgraph-storage).
-For a complete example, see the [docker-compose.yml](../docker-compose.yml) file.
-
-## Versions
-
-Image tags represent the matching Git commit on the [Request Storage Subgraph](https://github.com/RequestNetwork/storage-subgraph) repository.
+```bash
+ENV KEEP_ALIVE=         # options=0 or 1 (where 1 keeps the container alive)
+```
