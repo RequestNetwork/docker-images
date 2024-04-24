@@ -11,6 +11,7 @@ ENV SUBGRAPH_BRANCH=    # defaults to main
 ENV SUBGRAPH_FILE=      # no default, typically subgraph-<chain>.yaml for above repo
 ENV SUBGRAPH_NAME=      # defaults to request-network/request-storage
 ```
+
 graph-node / ipfs
 ```bash
 ENV GRAPH_NODE=         # no default, typically http://<graph-node-host>:8020

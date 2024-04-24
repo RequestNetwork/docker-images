@@ -4,12 +4,12 @@ FROM debian:12-slim
 ENV SUBGRAPH_REPO=https://github.com/RequestNetwork/storage-subgraph.git
 ENV SUBGRAPH_BRANCH=main
 ENV SUBGRAPH_FILE=
-ENV SUBGRAPH_NAMESPACE=request-network/request-storage
+ENV SUBGRAPH_NAME=request-network/request-storage
 
 ENV GRAPH_NODE=
 ENV IPFS_HOST=
 
-ENV KEEP_ALIVE=1
+ENV KEEP_ALIVE=
 
 # shell
 SHELL ["/bin/bash", "-c"]
