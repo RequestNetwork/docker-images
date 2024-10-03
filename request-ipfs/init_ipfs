@@ -57,6 +57,10 @@ ipfs config Swarm.DisableBandwidthMetrics true --json
 ipfs config Swarm.ConnMgr.LowWater 50 --json
 ipfs config Swarm.ConnMgr.HighWater 1000 --json
 
+if [ "${ENABLE_RELAY_SERVICE}" = "true" ]; then
+  ipfs config Swarm.EnableRelayHop true --json
+fi
+
 # allow cors calls
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"*\"]"
 
