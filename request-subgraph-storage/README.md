@@ -9,7 +9,7 @@ subgraph data
 ENV SUBGRAPH_REPO=      # defaults to https://github.com/RequestNetwork/storage-subgraph.git
 ENV SUBGRAPH_BRANCH=    # defaults to main
 ENV SUBGRAPH_FILE=      # no default, typically subgraph-<chain>.yaml for above repo
-ENV SUBGRAPH_NAME=      # defaults to request-network/request-storage
+ENV SUBGRAPH_NAME=      # defaults to RequestNetwork/request-storage
 ```
 
 graph-node / ipfs
