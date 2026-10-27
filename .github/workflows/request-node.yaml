@@ -30,5 +30,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           build-args: REQUEST_NODE_VERSION=${{ steps.npm-version.outputs.version }}
           tags: requestnetwork/request-node:${{ steps.npm-version.outputs.version }},requestnetwork/request-node:${{ github.event.inputs.version }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/RequestNetwork/docker-images
+            org.opencontainers.image.revision=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
