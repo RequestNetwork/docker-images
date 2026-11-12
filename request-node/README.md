@@ -30,3 +30,5 @@ Image tags represent the matching version of NPM's [@requestnetwork/request-node
 
 - `latest` targets the latest released version of the package on NPM ;
 - `next` points to the latest development version of the NPM package: `x.y.z-next.id`.
+
+For a runtime-only rebuild, set the workflow's `version` to the existing NPM package version and `image_tag` to a distinct Docker tag, such as `0.53.0-node22.23.5`. This publishes only the selected image tag without replacing the package-version or release-channel tags. Leave `image_tag` empty for the normal release behavior.
