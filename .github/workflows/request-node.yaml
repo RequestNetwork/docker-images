@@ -7,6 +7,9 @@ on:
         description: Version of the @requestnetwork/request-node NPM package to fetch (latest|next|version)
         default: next
         required: true
+      image_tag:
+        description: Optional Docker tag for a runtime-only rebuild (leaves package-version tags unchanged)
+        required: false
 
 jobs:
   docker:
@@ -15,6 +18,22 @@ jobs:
       - uses: actions/checkout@v4
       - id: npm-version
         run: echo "version=$(npm show @requestnetwork/request-node@${{ github.event.inputs.version }} version)" >> $GITHUB_OUTPUT
+      - name: Select image tags
+        id: image-tags
+        env:
+          IMAGE_TAG: ${{ inputs.image_tag }}
+          PACKAGE_VERSION: ${{ steps.npm-version.outputs.version }}
+          VERSION_INPUT: ${{ inputs.version }}
+        run: |
+          if [ -n "$IMAGE_TAG" ]; then
+            if [[ ! "$IMAGE_TAG" =~ ^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,127}$ ]]; then
+              echo "Invalid Docker image tag" >&2
+              exit 1
+            fi
+            echo "tags=requestnetwork/request-node:$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+          else
+            echo "tags=requestnetwork/request-node:$PACKAGE_VERSION,requestnetwork/request-node:$VERSION_INPUT" >> "$GITHUB_OUTPUT"
+          fi
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -29,7 +48,7 @@ jobs:
           context: request-node
           platforms: linux/amd64,linux/arm64
           build-args: REQUEST_NODE_VERSION=${{ steps.npm-version.outputs.version }}
-          tags: requestnetwork/request-node:${{ steps.npm-version.outputs.version }},requestnetwork/request-node:${{ github.event.inputs.version }}
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: |
             org.opencontainers.image.source=https://github.com/RequestNetwork/docker-images
             org.opencontainers.image.revision=${{ github.sha }}
